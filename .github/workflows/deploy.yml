@@ -1,0 +1,57 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  release:
+    types: [published]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24.18.1'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Determine Subpath & Build
+        run: |
+          if [ "${{ github.event_name }}" = "release" ] || [[ "${{ github.ref }}" =~ ^refs/tags/ ]]; then
+            echo "Building for Release (Root)"
+            # リリース版はトップに配置
+            npm run build
+            mkdir -p public_deploy
+            cp -r dist/* public_deploy/
+          else
+            echo "Building for Development/Main (Subfolder /dev/)"
+            # mainへのpush（開発版）は /dev/ ディレクトリ配下に配置する
+            # vite.config.js の base を /gaorin-seeker/dev/ に合わせる必要がある場合は適宜調整
+            # ここではリポジトリ名が gaorin-seeker であると仮定して base を設定してビルド
+            npm run build -- --base=/gaorin-seeker/dev/
+            mkdir -p public_deploy/dev
+            cp -r dist/* public_deploy/dev/
+          fi
+
+      - name: Deploy to GitHub Pages (gh-pages branch)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./public_deploy
+          # orphan: true と clean: true にすると、デプロイのたびにブランチ全体や
+          # 他のディレクトリ（dev/ やルート）が消えてしまうため削除し、
+          # 既存の gh-pages ブランチをチェックアウトしてマージ・上書きするように変更します。
+          # これによりルート（リリース版）と dev/（開発版）を共存させます。
+          keep_files: true
+          clean: false
