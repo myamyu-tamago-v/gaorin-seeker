@@ -22,3 +22,9 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <https://unlicense.org>
+
+------------------------------------------------------------------------------
+【⚠️ EXCEPTIONS / 例外規定】
+The "public/assets/" directory (including logos, character illustrations, and icons) is NOT covered by this Unlicense. All rights reserved by the author. Unauthorized reuse or redistribution is strictly prohibited.
+
+「public/assets/」フォルダ内の素材（ロゴ、キャラクター、アイコン等）は、このUnlicenseの対象外です。著作権は作者に帰属し、無断での転載や再配布を禁止します。他の人が本アプリを複製・利用する際は、必ず自身の画像に差し替えてください。
