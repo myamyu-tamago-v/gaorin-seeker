@@ -1,0 +1,22 @@
+[
+  {
+    "title": "東京タワー周辺",
+    "xPostUrl": "https://twitter.com/example/status/123456789",
+    "hintImages": [
+      "https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=800&q=80"
+    ],
+    "latitude": 35.658581,
+    "longitude": 139.745433,
+    "id": "8d56f88a"
+  },
+  {
+    "title": "雷門（浅草寺）",
+    "xPostUrl": "https://twitter.com/example/status/987654321",
+    "hintImages": [
+      "https://images.unsplash.com/photo-1590534406716-f77e4cb4904d?auto=format&fit=crop&w=800&q=80"
+    ],
+    "latitude": 35.711206,
+    "longitude": 139.796739,
+    "id": "f677ee80"
+  }
+]

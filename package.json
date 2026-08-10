@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "stages:update": "node scripts/update-stages.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",

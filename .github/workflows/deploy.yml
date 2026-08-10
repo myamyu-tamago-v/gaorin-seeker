@@ -36,8 +36,6 @@ jobs:
           else
             echo "Building for Development/Main (Subfolder /dev/)"
             # mainへのpush（開発版）は /dev/ ディレクトリ配下に配置する
-            # vite.config.js の base を /gaorin-seeker/dev/ に合わせる必要がある場合は適宜調整
-            # ここではリポジトリ名が gaorin-seeker であると仮定して base を設定してビルド
             npm run build -- --base=/gaorin-seeker/dev/
             mkdir -p public_deploy/dev
             cp -r dist/* public_deploy/dev/
