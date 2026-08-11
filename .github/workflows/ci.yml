@@ -65,7 +65,7 @@ jobs:
           customHeaders: '{"Authorization": "Bearer ${{ secrets.OPENROUTER_API_KEY }}"}'
           data: >
             {
-              "model": "openai/gpt-oss-120b:free",
+              "model": "openrouter/free",
               "messages": [
                 {
                   "role": "system",
