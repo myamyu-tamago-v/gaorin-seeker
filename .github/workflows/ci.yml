@@ -47,14 +47,18 @@ jobs:
       - name: Get git diff
         id: get_diff
         run: |
-          # ターゲットブランチ（mainやdevelopなど）との差分を取得して環境変数に入れる
+          # ターゲットブランチ（mainやdevelopなど）との差分を取得
           git diff origin/${{ github.base_ref }}...HEAD > diff.txt
-          echo "DIFF_EXIST=$(json_encode < diff.txt)" >> $GITHUB_ENV
+
+          # 差分を環境変数に安全にエスケープして保存（複数行対応）
+          echo "PR_DIFF<<EOF" >> $GITHUB_ENV
+          cat diff.txt >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
         shell: bash
 
       - name: OpenRouter AI Review
         id: ai_response
-        uses: fjogeleit/http-request-action@v1
+        uses: fjogeleit/http-request-action@v2
         with:
           url: 'https://openrouter.ai/api/v1/chat/completions'
           method: 'POST'
@@ -69,7 +73,7 @@ jobs:
                 },
                 {
                   "role": "user",
-                  "content": $(cat diff.txt | jq -R -s .)
+                  "content": ${{ toJson(env.PR_DIFF) }}
                 }
               ]
             }
