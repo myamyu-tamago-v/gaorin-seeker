@@ -32,3 +32,52 @@ jobs:
           reporter: github-pr-review
           tool_name: eslint-node-24
           eslint_flags: "."
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Get git diff
+        id: get_diff
+        run: |
+          # ターゲットブランチ（mainやdevelopなど）との差分を取得して環境変数に入れる
+          git diff origin/${{ github.base_ref }}...HEAD > diff.txt
+          echo "DIFF_EXIST=$(json_encode < diff.txt)" >> $GITHUB_ENV
+        shell: bash
+
+      - name: OpenRouter AI Review
+        id: ai_response
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://openrouter.ai/api/v1/chat/completions'
+          method: 'POST'
+          customHeaders: '{"Authorization": "Bearer ${{ secrets.OPENROUTER_API_KEY }}"}'
+          data: >
+            {
+              "model": "openai/gpt-oss-120b:free",
+              "messages": [
+                {
+                  "role": "system",
+                  "content": "あなたは優秀なシニアエンジニアです。提供されたGitの差分コード（diff）を日本語でレビューし、バグの可能性、可読性の改善点、セキュリティ上の懸念があれば、指摘箇所を明確にしてプルリクエストのコメント形式でアドバイスしてください。特に問題がなければ褒めてください。"
+                },
+                {
+                  "role": "user",
+                  "content": $(cat diff.txt | jq -R -s .)
+                }
+              ]
+            }
+
+      - name: Comment on PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            ### 🤖 AI Code Review 結果
+
+            ${{ fromJson(steps.ai_response.outputs.response).choices[0].message.content }}
