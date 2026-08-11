@@ -51,9 +51,10 @@ jobs:
           git diff origin/${{ github.base_ref }}...HEAD > diff.txt
 
           # 差分を環境変数に安全にエスケープして保存（複数行対応）
-          echo "PR_DIFF<<EOF" >> $GITHUB_ENV
+          EOF=$(dd if=/dev/urandom bs=15 count=1 2>/dev/null | base64 | tr -dc 'a-zA-Z0-9')
+          echo "PR_DIFF<<$EOF" >> $GITHUB_ENV
           cat diff.txt >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          echo "$EOF" >> $GITHUB_ENV
         shell: bash
 
       - name: OpenRouter AI Review
@@ -79,7 +80,7 @@ jobs:
             }
 
       - name: Comment on PR
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
           message: |
             ### 🤖 AI Code Review 結果
