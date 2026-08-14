@@ -1,3 +1,7 @@
+/**
+ * @fileoverview ステージデータ検証・自動採番スクリプト
+ * stages.jsonの各項目を確認し、不足しているIDや緯度経度を補完するにゃ。
+ */
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -6,6 +10,9 @@ import crypto from 'node:crypto'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const filePath = path.resolve(__dirname, '../src/data/stages.json')
 
+/**
+ * stages.jsonファイルを読み込み、IDや緯度経度が欠けているステージを自動補完して保存するにゃ。
+ */
 function updateStages() {
   if (!fs.existsSync(filePath)) {
     console.error('stages.jsonが見つからないにゃ！')

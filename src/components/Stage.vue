@@ -63,7 +63,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+/**
+ * @fileoverview ステージプレイ画面コンポーネント
+ * 拡大されたヒント画像をCanvas上で動かして探索し、Leafletマップにピンを立てて解答するにゃ。
+ */
+import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
@@ -134,6 +138,13 @@ onMounted(() => {
   }, 1000)
 })
 
+// loadedImageやステージが変わったときにCanvasを再初期化・再描画するにゃ
+watch(() => props.loadedImage, () => {
+  nextTick(() => {
+    initCanvas()
+  })
+})
+
 onUnmounted(() => {
   if (timerInterval) clearInterval(timerInterval)
   if (leafletMap) {
@@ -142,6 +153,9 @@ onUnmounted(() => {
   }
 })
 
+/**
+ * Canvas要素とLeafletマップを初期化し、タイマーを開始するにゃ。
+ */
 const initCanvas = () => {
   console.debug("Zoom:", props.zoomScale);
   const canvas = canvasRef.value
@@ -166,6 +180,9 @@ const initCanvas = () => {
   }
 }
 
+/**
+ * 現在のクロップ位置とズーム倍率に基づいてCanvasにヒント画像を描画するにゃ。
+ */
 const drawCanvas = () => {
   const canvas = canvasRef.value
   if (!canvas || !props.loadedImage) return
@@ -190,12 +207,20 @@ const drawCanvas = () => {
   )
 }
 
+/**
+ * Canvas上のマウスドラッグ開始処理にゃ。
+ * @param {MouseEvent} e - マウスイベント
+ */
 const onCanvasMouseDown = (e) => {
   isDraggingCanvas.value = true
   dragStartX.value = e.clientX
   dragStartY.value = e.clientY
 }
 
+/**
+ * Canvas上のマウスドラッグ中処理（画像表示位置の移動）にゃ。
+ * @param {MouseEvent} e - マウスイベント
+ */
 const onCanvasMouseMove = (e) => {
   if (!isDraggingCanvas.value || !props.loadedImage) return
   const dx = e.clientX - dragStartX.value
@@ -222,10 +247,17 @@ const onCanvasMouseMove = (e) => {
   drawCanvas()
 }
 
+/**
+ * Canvas上のマウスドラッグ終了処理にゃ。
+ */
 const onCanvasMouseUp = () => {
   isDraggingCanvas.value = false
 }
 
+/**
+ * タッチ操作によるドラッグ開始処理にゃ。
+ * @param {TouchEvent} e - タッチイベント
+ */
 const onCanvasTouchStart = (e) => {
   if (e.touches.length === 1) {
     isDraggingCanvas.value = true
@@ -234,6 +266,10 @@ const onCanvasTouchStart = (e) => {
   }
 }
 
+/**
+ * タッチ操作によるドラッグ中処理にゃ。
+ * @param {TouchEvent} e - タッチイベント
+ */
 const onCanvasTouchMove = (e) => {
   if (!isDraggingCanvas.value || !props.loadedImage || e.touches.length !== 1) return
   const dx = e.touches[0].clientX - dragStartX.value
@@ -260,10 +296,16 @@ const onCanvasTouchMove = (e) => {
   drawCanvas()
 }
 
+/**
+ * タッチ操作終了処理にゃ。
+ */
 const onCanvasTouchEnd = () => {
   isDraggingCanvas.value = false
 }
 
+/**
+ * Leafletマップを初期化し、クリックイベントでピンを配置できるようにするにゃ。
+ */
 const initMap = () => {
   if (leafletMap) {
     leafletMap.remove()
@@ -272,7 +314,7 @@ const initMap = () => {
 
   leafletMap = L.map(mapContainer.value, {
     zoomControl: false,
-  }).setView([35.68, 139.76], 5)
+  }).setView([34.2257, 135.1675], 12)
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors',
@@ -284,10 +326,19 @@ const initMap = () => {
     const { lat, lng } = e.latlng
     selectedPin.value = { lat, lng }
     markerLayer.clearLayers()
-    L.marker([lat, lng]).addTo(markerLayer)
+    const userIcon = L.divIcon({
+      className: 'custom-user-marker',
+      html: '<div style="background-color: #ef4444; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+      iconSize: [24, 24],
+      iconAnchor: [12, 12],
+    })
+    L.marker([lat, lng], { icon: userIcon }).addTo(markerLayer)
   })
 }
 
+/**
+ * マップの表示サイズ（拡大・縮小）を切り替えるにゃ。
+ */
 const toggleMapExpand = () => {
   isMapExpanded.value = !isMapExpanded.value
   nextTick(() => {
@@ -297,11 +348,17 @@ const toggleMapExpand = () => {
   })
 }
 
+/**
+ * ピン配置を確定し、ステージを終了させるにゃ。
+ */
 const confirmPlacement = () => {
   if (timerInterval) clearInterval(timerInterval)
   finishStage()
 }
 
+/**
+ * タイマーをクリアしてステージ終了イベントを発火するにゃ。
+ */
 const finishStage = () => {
   if (timerInterval) clearInterval(timerInterval)
   emit('finish', { selectedPin: selectedPin.value })

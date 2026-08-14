@@ -64,12 +64,17 @@
 </template>
 
 <script setup>
+/**
+ * @fileoverview メインアプリケーションコンポーネント
+ * ゲームの全体的な状態（開始、設定、ローディング、プレイ中、ステージ集計、最終結果）を管理するにゃ。
+ */
 import { ref, computed } from 'vue'
 import stagesData from './data/stages.json'
 import Settings from './components/Settings.vue'
 import Stage from './components/Stage.vue'
 import Summary from './components/Summary.vue'
 import Result from './components/Result.vue'
+import L from 'leaflet'
 
 const gameState = ref('start') // 'start' | 'settings' | 'loading' | 'ready' | 'playing' | 'summary' | 'result'
 
@@ -90,33 +95,47 @@ const totalScore = ref(0)
 const resultsHistory = ref([])
 const lastSelectedPin = ref(null)
 
+/**
+ * 現在のステージデータを返す算出プロパティにゃ。
+ */
 const currentStage = computed(() => {
   return gameStages.value[currentStageIndex.value] || null
 })
 
+/**
+ * 最終ステージかどうかを判定する算出プロパティにゃ。
+ */
 const isLastStage = computed(() => {
   return currentStageIndex.value >= gameStages.value.length - 1
 })
 
+/**
+ * ゲーム設定画面へ遷移するにゃ。
+ */
 const goToSettings = () => {
   gameState.value = 'settings'
 }
 
+/**
+ * 2地点間の緯度経度から大円距離（メートル）を計算するにゃ（ハヴァサイン公式）。
+ * @param {number} lat1 - 地点1の緯度
+ * @param {number} lon1 - 地点1の経度
+ * @param {number} lat2 - 地点2の緯度
+ * @param {number} lon2 - 地点2の経度
+ * @returns {number} 距離（メートル）
+ */
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  const R = 6371e3
-  const φ1 = (lat1 * Math.PI) / 180
-  const φ2 = (lat2 * Math.PI) / 180
-  const Δφ = ((lat2 - lat1) * Math.PI) / 180
-  const Δλ = ((lon2 - lon1) * Math.PI) / 180
-
-  const a =
-    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2)
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
-  return R * c
+  // Leaflet標準の latLng(lat1, lon1).distanceTo(latLng(lat2, lon2)) を利用して正確にメートル単位の距離を計算するにゃ
+  const p1 = L.latLng(lat1, lon1)
+  const p2 = L.latLng(lat2, lon2)
+  return p1.distanceTo(p2)
 }
 
+/**
+ * 誤差距離に応じたスコアを計算するにゃ（最大50kmで0pt、近いほど高得点）。
+ * @param {number} distance - 誤差距離（メートル）
+ * @returns {number} 獲得スコア
+ */
 const calculateScore = (distance) => {
   const maxDistance = 50000
   if (distance >= maxDistance) return 0
@@ -124,6 +143,9 @@ const calculateScore = (distance) => {
   return Math.max(0, score)
 }
 
+/**
+ * ゲームを開始し、ステージの抽選と初期化を行うにゃ。
+ */
 const startGame = async () => {
   const count = settings.value.stagesCount
   let pool = stagesData.filter(stage => stage && stage.id)
@@ -149,6 +171,9 @@ const startGame = async () => {
   await loadCurrentStage()
 }
 
+/**
+ * 現在のステージのヒント画像をランダムに選択・ロードし、初期クロップ位置を設定するにゃ。
+ */
 const loadCurrentStage = async () => {
   gameState.value = 'loading'
   lastSelectedPin.value = null
@@ -160,7 +185,8 @@ const loadCurrentStage = async () => {
   }
 
   const randomImgUrl = stage.hintImages[Math.floor(Math.random() * stage.hintImages.length)]
-  zoomScale.value = 5 + Math.random() * 3
+  // ヒント画像のスケール
+  zoomScale.value = 3 + Math.random() * 3
 
   try {
     await new Promise((resolve, reject) => {
@@ -178,6 +204,11 @@ const loadCurrentStage = async () => {
   }
 }
 
+/**
+ * ステージを終了し、スコアと誤差を計算して集計画面へ移行するにゃ。
+ * @param {Object} payload - イベントペイロード
+ * @param {Object} payload.selectedPin - プレイヤーが配置したピンの緯度経度
+ */
 const finishStage = ({ selectedPin }) => {
   lastSelectedPin.value = selectedPin
 
@@ -196,15 +227,22 @@ const finishStage = ({ selectedPin }) => {
     title: stage.title,
     score: stageScore.value,
     distance: distanceMeters.value,
+    latitude: stage.latitude,
+    longitude: stage.longitude,
   })
 
   gameState.value = 'summary'
 }
 
+/**
+ * 次のステージに進む、または全ステージ終了時は結果画面へ遷移するにゃ。
+ */
+// 次のステージへ行く前に現在の画像をクリアして前の画像残りを防ぐにゃ
 const nextStage = async () => {
   if (isLastStage.value) {
     gameState.value = 'result'
   } else {
+    currentImage.value = null
     currentStageIndex.value++
     await loadCurrentStage()
   }

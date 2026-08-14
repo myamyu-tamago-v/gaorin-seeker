@@ -1,4 +1,8 @@
 /**
+ * @fileoverview ステージデータとゲーム設定のJSDoc型定義
+ */
+
+/**
  * @typedef {Object} StageData
  * @property {string} id - ID
  * @property {string} title - タイトル
