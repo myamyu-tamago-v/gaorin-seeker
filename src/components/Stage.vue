@@ -284,7 +284,13 @@ const initMap = () => {
     const { lat, lng } = e.latlng
     selectedPin.value = { lat, lng }
     markerLayer.clearLayers()
-    L.marker([lat, lng]).addTo(markerLayer)
+    const userIcon = L.divIcon({
+      className: 'custom-user-marker',
+      html: '<div style="background-color: #ef4444; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+      iconSize: [24, 24],
+      iconAnchor: [12, 12],
+    })
+    L.marker([lat, lng], { icon: userIcon }).addTo(markerLayer)
   })
 }
 
