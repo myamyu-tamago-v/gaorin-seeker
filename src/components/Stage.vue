@@ -27,7 +27,7 @@
     <!-- 右下のマップ（通常または拡大） -->
     <div
       class="absolute bottom-4 right-4 z-10 transition-all duration-300 flex flex-col items-end"
-      :class="isMapExpanded ? 'w-[90vw] h-[70vh] md:w-[600px] md:h-[500px]' : 'w-72 h-72 md:w-80 md:h-80'"
+      :class="isMapExpanded ? 'w-[90vw] h-[70vh] md:w-150 md:h-125' : 'w-72 h-72 md:w-80 md:h-80'"
     >
       <!-- マップコントロールバー -->
       <div class="bg-white/90 backdrop-blur px-3 py-1.5 rounded-t-xl shadow flex justify-between items-center w-full">
@@ -82,10 +82,6 @@ const props = defineProps({
   },
   timeLimit: {
     type: Number,
-    required: true,
-  },
-  hintImageUrl: {
-    type: String,
     required: true,
   },
   zoomScale: {

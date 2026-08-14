@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, nextTick } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import stagesData from './data/stages.json'
 import Settings from './components/Settings.vue'
 import Stage from './components/Stage.vue'
@@ -182,17 +182,12 @@ const finishStage = ({ selectedPin }) => {
   lastSelectedPin.value = selectedPin
 
   const stage = currentStage.value
-  let dist = 0
-  if (selectedPin) {
-    dist = calculateDistance(
-      selectedPin.lat,
-      selectedPin.lng,
-      stage.latitude,
-      stage.longitude
-    )
-  } else {
-    dist = 1000000
-  }
+  const dist = selectedPin ? calculateDistance(
+    selectedPin.lat,
+    selectedPin.lng,
+    stage.latitude,
+    stage.longitude
+  ) : 1000000;
   distanceMeters.value = Math.round(dist)
   stageScore.value = calculateScore(dist)
   totalScore.value += stageScore.value

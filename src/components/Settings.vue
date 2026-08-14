@@ -6,7 +6,7 @@
 
     <div class="mb-6">
       <label class="block text-orange-900 font-bold mb-2">
-        ステージ数:
+        ステージ数にゃ:
         <span class="text-orange-600">{{ modelValue.stagesCount }}</span>
       </label>
       <input
@@ -59,11 +59,6 @@
 </template>
 
 <script setup>
-defineProps({
-  modelValue: {
-    type: Object,
-    required: true,
-  },
-})
+const modelValue = defineModel({ type: Object, required: true });
 defineEmits(['back', 'start'])
 </script>
