@@ -126,7 +126,7 @@ const calculateScore = (distance) => {
 
 const startGame = async () => {
   const count = settings.value.stagesCount
-  let pool = [...stagesData]
+  let pool = stagesData.filter(stage => stage && stage.id)
   let selected = []
 
   if (pool.length >= count) {
