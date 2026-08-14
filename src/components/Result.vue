@@ -36,6 +36,10 @@
 </template>
 
 <script setup>
+/**
+ * @fileoverview 最終結果コンポーネント
+ * 全ステージ終了時の合計スコアと各ステージの成績履歴を表示するにゃ。
+ */
 defineProps({
   totalScore: {
     type: Number,

@@ -59,6 +59,10 @@
 </template>
 
 <script setup>
+/**
+ * @fileoverview 設定コンポーネント
+ * プレイするステージ数や制限時間をスライダーで調整・設定するにゃ。
+ */
 const modelValue = defineModel({ type: Object, required: true });
 defineEmits(['back', 'start'])
 </script>

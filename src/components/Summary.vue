@@ -35,6 +35,10 @@
 </template>
 
 <script setup>
+/**
+ * @fileoverview ステージ結果集計コンポーネント
+ * プレイヤーが置いたピンと正解位置をマップ上で比較し、誤差距離とスコアを表示するにゃ。
+ */
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -80,6 +84,9 @@ onUnmounted(() => {
   }
 })
 
+/**
+ * 結果発表用のマップを初期化し、正解位置とユーザーのピンを線で結んで表示するにゃ。
+ */
 const initSummaryMap = () => {
   if (summaryMap) {
     summaryMap.remove()

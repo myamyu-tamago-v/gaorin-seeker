@@ -64,6 +64,10 @@
 </template>
 
 <script setup>
+/**
+ * @fileoverview メインアプリケーションコンポーネント
+ * ゲームの全体的な状態（開始、設定、ローディング、プレイ中、ステージ集計、最終結果）を管理するにゃ。
+ */
 import { ref, computed } from 'vue'
 import stagesData from './data/stages.json'
 import Settings from './components/Settings.vue'
@@ -90,18 +94,35 @@ const totalScore = ref(0)
 const resultsHistory = ref([])
 const lastSelectedPin = ref(null)
 
+/**
+ * 現在のステージデータを返す算出プロパティにゃ。
+ */
 const currentStage = computed(() => {
   return gameStages.value[currentStageIndex.value] || null
 })
 
+/**
+ * 最終ステージかどうかを判定する算出プロパティにゃ。
+ */
 const isLastStage = computed(() => {
   return currentStageIndex.value >= gameStages.value.length - 1
 })
 
+/**
+ * ゲーム設定画面へ遷移するにゃ。
+ */
 const goToSettings = () => {
   gameState.value = 'settings'
 }
 
+/**
+ * 2地点間の緯度経度から大円距離（メートル）を計算するにゃ（ハヴァサイン公式）。
+ * @param {number} lat1 - 地点1の緯度
+ * @param {number} lon1 - 地点1の経度
+ * @param {number} lat2 - 地点2の緯度
+ * @param {number} lon2 - 地点2の経度
+ * @returns {number} 距離（メートル）
+ */
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
   const R = 6371e3
   const φ1 = (lat1 * Math.PI) / 180
@@ -117,6 +138,11 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
   return R * c
 }
 
+/**
+ * 誤差距離に応じたスコアを計算するにゃ（最大50kmで0pt、近いほど高得点）。
+ * @param {number} distance - 誤差距離（メートル）
+ * @returns {number} 獲得スコア
+ */
 const calculateScore = (distance) => {
   const maxDistance = 50000
   if (distance >= maxDistance) return 0
@@ -124,6 +150,9 @@ const calculateScore = (distance) => {
   return Math.max(0, score)
 }
 
+/**
+ * ゲームを開始し、ステージの抽選と初期化を行うにゃ。
+ */
 const startGame = async () => {
   const count = settings.value.stagesCount
   let pool = stagesData.filter(stage => stage && stage.id)
@@ -149,6 +178,9 @@ const startGame = async () => {
   await loadCurrentStage()
 }
 
+/**
+ * 現在のステージのヒント画像をランダムに選択・ロードし、初期クロップ位置を設定するにゃ。
+ */
 const loadCurrentStage = async () => {
   gameState.value = 'loading'
   lastSelectedPin.value = null
@@ -178,6 +210,11 @@ const loadCurrentStage = async () => {
   }
 }
 
+/**
+ * ステージを終了し、スコアと誤差を計算して集計画面へ移行するにゃ。
+ * @param {Object} payload - イベントペイロード
+ * @param {Object} payload.selectedPin - プレイヤーが配置したピンの緯度経度
+ */
 const finishStage = ({ selectedPin }) => {
   lastSelectedPin.value = selectedPin
 
@@ -201,6 +238,9 @@ const finishStage = ({ selectedPin }) => {
   gameState.value = 'summary'
 }
 
+/**
+ * 次のステージに進む、または全ステージ終了時は結果画面へ遷移するにゃ。
+ */
 const nextStage = async () => {
   if (isLastStage.value) {
     gameState.value = 'result'
