@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, computed } from 'vue'
 import stagesData from './data/stages.json'
 import Settings from './components/Settings.vue'
 import Stage from './components/Stage.vue'
@@ -73,7 +73,7 @@ import Result from './components/Result.vue'
 
 const gameState = ref('start') // 'start' | 'settings' | 'loading' | 'ready' | 'playing' | 'summary' | 'result'
 
-const settings = reactive({
+const settings = ref({
   stagesCount: 5,
   timeLimit: 60,
 })
@@ -125,7 +125,7 @@ const calculateScore = (distance) => {
 }
 
 const startGame = async () => {
-  const count = settings.stagesCount
+  const count = settings.value.stagesCount
   let pool = [...stagesData]
   let selected = []
 
