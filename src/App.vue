@@ -234,6 +234,8 @@ const finishStage = ({ selectedPin }) => {
     title: stage.title,
     score: stageScore.value,
     distance: distanceMeters.value,
+    latitude: stage.latitude,
+    longitude: stage.longitude,
   })
 
   gameState.value = 'summary'

@@ -12,7 +12,13 @@
       <p class="text-5xl font-black text-orange-600">{{ totalScore }} <span class="text-xl">pts</span></p>
     </div>
 
-    <div class="space-y-2 mb-8 max-h-48 overflow-y-auto text-left">
+    <!-- マップ表示 (すべての正解スポットを表示) -->
+    <div
+      ref="mapContainer"
+      class="w-full h-48 rounded-xl shadow-inner mb-4 border border-gray-200"
+    ></div>
+
+    <div class="space-y-2 mb-6 max-h-40 overflow-y-auto text-left">
       <div
         v-for="(res, idx) in resultsHistory"
         :key="idx"
@@ -38,9 +44,13 @@
 <script setup>
 /**
  * @fileoverview 最終結果コンポーネント
- * 全ステージ終了時の合計スコアと各ステージの成績履歴を表示するにゃ。
+ * 全ステージ終了時の合計スコアと各ステージの成績履歴、正解スポットすべてをプロットした地図を表示するにゃ。
  */
-defineProps({
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+
+const props = defineProps({
   totalScore: {
     type: Number,
     required: true,
@@ -52,4 +62,62 @@ defineProps({
 })
 
 defineEmits(['restart'])
+
+const mapContainer = ref(null)
+let resultMap = null
+
+onMounted(() => {
+  nextTick(() => {
+    initResultMap()
+  })
+})
+
+onUnmounted(() => {
+  if (resultMap) {
+    resultMap.remove()
+    resultMap = null
+  }
+})
+
+/**
+ * すべての正解スポットをプロットした最終結果マップを初期化するにゃ。
+ */
+const initResultMap = () => {
+  if (resultMap) {
+    resultMap.remove()
+    resultMap = null
+  }
+
+  const history = props.resultsHistory
+  if (!history || history.length === 0) return
+
+  resultMap = L.map(mapContainer.value).setView([34.2257, 135.1675], 10)
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+  }).addTo(resultMap)
+
+  const bounds = []
+
+  history.forEach((res, idx) => {
+    if (res.latitude && res.longitude) {
+      const answerIcon = L.divIcon({
+        className: 'custom-answer-marker',
+        html: `<div style="background-color: #f97316; width: 26px; height: 26px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">${idx + 1}</div>`,
+        iconSize: [26, 26],
+        iconAnchor: [13, 13],
+      })
+      
+      L.marker([res.latitude, res.longitude], { icon: answerIcon })
+        .addTo(resultMap)
+        .bindPopup(`#${idx + 1} ${res.title}`)
+
+      bounds.push([res.latitude, res.longitude])
+    }
+  })
+
+  if (bounds.length > 0) {
+    resultMap.fitBounds(L.latLngBounds(bounds), { padding: [50, 50], maxZoom: 14 })
+  }
+}
 </script>
