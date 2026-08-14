@@ -67,7 +67,7 @@
  * @fileoverview ステージプレイ画面コンポーネント
  * 拡大されたヒント画像をCanvas上で動かして探索し、Leafletマップにピンを立てて解答するにゃ。
  */
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
@@ -136,6 +136,13 @@ onMounted(() => {
       finishStage()
     }
   }, 1000)
+})
+
+// loadedImageやステージが変わったときにCanvasを再初期化・再描画するにゃ
+watch(() => props.loadedImage, () => {
+  nextTick(() => {
+    initCanvas()
+  })
 })
 
 onUnmounted(() => {

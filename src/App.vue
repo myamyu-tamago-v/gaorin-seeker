@@ -241,10 +241,12 @@ const finishStage = ({ selectedPin }) => {
 /**
  * 次のステージに進む、または全ステージ終了時は結果画面へ遷移するにゃ。
  */
+// 次のステージへ行く前に現在の画像をクリアして前の画像残りを防ぐにゃ
 const nextStage = async () => {
   if (isLastStage.value) {
     gameState.value = 'result'
   } else {
+    currentImage.value = null
     currentStageIndex.value++
     await loadCurrentStage()
   }
