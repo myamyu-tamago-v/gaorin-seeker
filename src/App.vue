@@ -74,6 +74,7 @@ import Settings from './components/Settings.vue'
 import Stage from './components/Stage.vue'
 import Summary from './components/Summary.vue'
 import Result from './components/Result.vue'
+import L from 'leaflet'
 
 const gameState = ref('start') // 'start' | 'settings' | 'loading' | 'ready' | 'playing' | 'summary' | 'result'
 
@@ -124,18 +125,10 @@ const goToSettings = () => {
  * @returns {number} 距離（メートル）
  */
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  const R = 6371e3
-  const φ1 = (lat1 * Math.PI) / 180
-  const φ2 = (lat2 * Math.PI) / 180
-  const Δφ = ((lat2 - lat1) * Math.PI) / 180
-  const Δλ = ((lon2 - lon1) * Math.PI) / 180
-
-  const a =
-    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2)
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
-  return R * c
+  // Leaflet標準の latLng(lat1, lon1).distanceTo(latLng(lat2, lon2)) を利用して正確にメートル単位の距離を計算するにゃ
+  const p1 = L.latLng(lat1, lon1)
+  const p2 = L.latLng(lat2, lon2)
+  return p1.distanceTo(p2)
 }
 
 /**
