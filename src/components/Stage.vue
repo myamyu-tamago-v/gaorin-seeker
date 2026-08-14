@@ -314,7 +314,7 @@ const initMap = () => {
 
   leafletMap = L.map(mapContainer.value, {
     zoomControl: false,
-  }).setView([35.68, 139.76], 5)
+  }).setView([34.2257, 135.1675], 12)
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors',
