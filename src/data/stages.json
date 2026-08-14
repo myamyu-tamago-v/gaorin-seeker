@@ -44,6 +44,52 @@
     "longitude": 135.0724736847551
   },
   {
+    "title": "がんこ 和歌山六三園",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2086324291709313422",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HPQc4MUbsAAZ8Q6?format=jpg&name=large",
+      "https://pbs.twimg.com/media/HPQc4oIasAAqYR8?format=jpg&name=large"
+    ],
+    "latlon": "34.21492296257524, 135.16787170674613",
+    "id": "6dd26624",
+    "latitude": 34.21492296257524,
+    "longitude": 135.16787170674613
+  },
+  {
+    "title": "グランフロント大阪 北館",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2086234107047272897",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HPPK3MAbwAAmust?format=jpg&name=large",
+      "https://pbs.twimg.com/media/HPPIsdta4AAQhXC?format=jpg&name=large"
+    ],
+    "latlon": "34.70602817300464, 135.49437418063317",
+    "id": "1b12e248",
+    "latitude": 34.70602817300464,
+    "longitude": 135.49437418063317
+  },
+  {
+    "title": "休暇村紀州加太",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2085499271953207412",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HPEuiFfaYAASbPI?format=jpg&name=large"
+    ],
+    "latlon": "34.29312924423791, 135.07247366435772",
+    "id": "c9ee8fb7",
+    "latitude": 34.29312924423791,
+    "longitude": 135.07247366435772
+  },
+  {
+    "title": "和歌山マリーナシティ",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2085150765778440596",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HO_xkbIbQAAJ1Mj?format=jpg&name=large"
+    ],
+    "latlon": "34.15391205631519, 135.17816920335886",
+    "id": "b4b87519",
+    "latitude": 34.15391205631519,
+    "longitude": 135.17816920335886
+  },
+  {
     "title": "",
     "xPostUrl": "",
     "hintImages": [
