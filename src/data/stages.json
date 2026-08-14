@@ -60,7 +60,8 @@
     "xPostUrl": "https://x.com/gao_rin_V/status/2086234107047272897",
     "hintImages": [
       "https://pbs.twimg.com/media/HPPK3MAbwAAmust?format=jpg&name=large",
-      "https://pbs.twimg.com/media/HPPIsdta4AAQhXC?format=jpg&name=large"
+      "https://pbs.twimg.com/media/HPPIsdta4AAQhXC?format=jpg&name=large",
+      "https://pbs.twimg.com/media/HNygG9mbgAAbbFn?format=jpg&name=large"
     ],
     "latlon": "34.70602817300464, 135.49437418063317",
     "id": "1b12e248",
@@ -88,6 +89,166 @@
     "id": "b4b87519",
     "latitude": 34.15391205631519,
     "longitude": 135.17816920335886
+  },
+  {
+    "title": "和歌山県立自然博物館",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2082980179409068112",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HOg7bobbYAAWIUw?format=jpg&name=large",
+      "https://pbs.twimg.com/media/HOdNKi_bsAAwOui?format=jpg&name=4096x4096"
+    ],
+    "latlon": "34.158957874848625, 135.1925040117489",
+    "id": "2d4bee1d",
+    "latitude": 34.158957874848625,
+    "longitude": 135.1925040117489
+  },
+  {
+    "title": "多賀神社",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2081525829197291818",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HOMQtTFbwAAG3yA?format=jpg&name=large"
+    ],
+    "latlon": "34.23079504118907, 135.1748004684755",
+    "id": "a5f5162a",
+    "latitude": 34.23079504118907,
+    "longitude": 135.1748004684755
+  },
+  {
+    "title": "刺田比古神社",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2078270714998833282",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HNeAM51acAAW1q4?format=jpg&name=large"
+    ],
+    "latlon": "34.22386380159621, 135.17437896472853",
+    "id": "9b305c4c",
+    "latitude": 34.22386380159621,
+    "longitude": 135.17437896472853
+  },
+  {
+    "title": "和歌山城の伏虎像",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2068846635673952746",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HLYFDVab0AAsIvx?format=jpg&name=large"
+    ],
+    "latlon": "34.22829573077952, 135.17345446799004",
+    "id": "a69a9f28",
+    "latitude": 34.22829573077952,
+    "longitude": 135.17345446799004
+  },
+  {
+    "title": "フォルテワジマ",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2068112973265277135",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HLNpyjcbcAAwrgt?format=jpg&name=large"
+    ],
+    "latlon": "34.23431579307627, 135.17498243351736",
+    "id": "2845a844",
+    "latitude": 34.23431579307627,
+    "longitude": 135.17498243351736
+  },
+  {
+    "title": "めっけもん広場",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2064537279964852589",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HKa1ty8a8AA7SFA?format=jpg&name=large"
+    ],
+    "latlon": "34.2784025379324, 135.35271367211152",
+    "id": "6c411a4f",
+    "latitude": 34.2784025379324,
+    "longitude": 135.35271367211152
+  },
+  {
+    "title": "三断橋",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2062303356581028272",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HJ7F-UabwAAGHgl?format=jpg&name=large"
+    ],
+    "latlon": "34.1874245774867, 135.1736746709979",
+    "id": "c1a06d0f",
+    "latitude": 34.1874245774867,
+    "longitude": 135.1736746709979
+  },
+  {
+    "title": "和歌山城 砂の丸広場",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2060851588231835929",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HJmdl_iboAAamMc?format=jpg&name=large"
+    ],
+    "latlon": "34.228254061993105, 135.16980188616682",
+    "id": "01f04a72",
+    "latitude": 34.228254061993105,
+    "longitude": 135.16980188616682
+  },
+  {
+    "title": "上富田文化会館",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2058373009224909205",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HJDPVdaasAEWieg?format=jpg&name=large",
+      "https://pbs.twimg.com/media/HJDPVeoasAERnAJ?format=jpg&name=large"
+    ],
+    "latlon": "33.69704737126919, 135.430089908894",
+    "id": "5ac529c1",
+    "latitude": 33.69704737126919,
+    "longitude": 135.430089908894
+  },
+  {
+    "title": "明光商店街",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2057604144106762547",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HI4UEKWa4AAqhMx?format=jpg&name=large"
+    ],
+    "latlon": "34.190522439753224, 135.16793985815434",
+    "id": "79f7a364",
+    "latitude": 34.190522439753224,
+    "longitude": 135.16793985815434
+  },
+  {
+    "title": "番所庭園",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2057253823987712111",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HIzVc1VbkAA2mux?format=jpg&name=large"
+    ],
+    "latlon": "34.190679009968825, 135.14068015327024",
+    "id": "e2dc867f",
+    "latitude": 34.190679009968825,
+    "longitude": 135.14068015327024
+  },
+  {
+    "title": "紀州東照宮",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2055838075574796711",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HIfN0gJakAA-90K?format=jpg&name=large",
+      "https://pbs.twimg.com/media/HIfN0nPaEAA3PE2?format=jpg&name=large",
+      "https://pbs.twimg.com/media/HIfN0rBa4AAqGqI?format=jpg&name=large",
+      "https://pbs.twimg.com/media/HIfN0pCasAAS_zv?format=jpg&name=large",
+      "https://pbs.twimg.com/media/HIepq8vbgAEpUzF?format=jpg&name=large"
+    ],
+    "latlon": "34.19280005717331, 135.16593415082266",
+    "id": "9bf17e92",
+    "latitude": 34.19280005717331,
+    "longitude": 135.16593415082266
+  },
+  {
+    "title": "帝国座テラス",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2054702642358865996",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HIPFKi6b0AA-GLw?format=jpg&name=large"
+    ],
+    "latlon": "34.23409021124152, 135.1783566518529",
+    "id": "eadc1a39",
+    "latitude": 34.23409021124152,
+    "longitude": 135.1783566518529
+  },
+  {
+    "title": "和歌山城の御橋廊下",
+    "xPostUrl": "https://x.com/gao_rin_V/status/2053606824973328426",
+    "hintImages": [
+      "https://pbs.twimg.com/media/HH_ghcmaYAEtaBu?format=jpg&name=large"
+    ],
+    "latlon": "34.228829384527515, 135.17136968764655",
+    "id": "200e33fd",
+    "latitude": 34.228829384527515,
+    "longitude": 135.17136968764655
   },
   {
     "title": "",
