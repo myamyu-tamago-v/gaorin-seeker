@@ -186,7 +186,7 @@ const loadCurrentStage = async () => {
 
   const randomImgUrl = stage.hintImages[Math.floor(Math.random() * stage.hintImages.length)]
   // ヒント画像のスケール
-  zoomScale.value = 3 + Math.random() * 3
+  zoomScale.value = 3 + Math.random() * 5
 
   try {
     await new Promise((resolve, reject) => {

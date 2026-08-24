@@ -103,6 +103,23 @@ const emit = defineEmits(['finish'])
 const timeLeft = ref(props.timeLimit)
 let timerInterval = null
 
+// 実際のズーム倍率および全体表示モードを保持するリアクティブな変数にゃ
+const currentZoomScale = ref(props.zoomScale)
+const isFullView = ref(false)
+
+// タイムリミットや残り時間の変更に応じてズーム倍率と全体表示を切り替えるにゃ
+watch([() => timeLeft.value, () => props.zoomScale], ([newTime, newZoom]) => {
+  if (newTime <= 10) {
+    if (!isFullView.value) {
+      isFullView.value = true
+      initCanvas()
+    }
+    return;
+  }
+  isFullView.value = false
+  currentZoomScale.value = newZoom
+}, { immediate: true })
+
 // Canvas / Crop state
 const canvasRef = ref(null)
 const cropOffsetX = ref(0)
@@ -157,24 +174,49 @@ onUnmounted(() => {
  * Canvas要素とLeafletマップを初期化し、タイマーを開始するにゃ。
  */
 const initCanvas = () => {
-  console.debug("Zoom:", props.zoomScale);
   const canvas = canvasRef.value
   if (!canvas) return
+  // Canvasサイズは親要素に合わせる
   canvasWidth = canvas.parentElement.clientWidth
   canvasHeight = canvas.parentElement.clientHeight
   canvas.width = canvasWidth
   canvas.height = canvasHeight
 
   if (props.loadedImage) {
+    console.debug("Full:", isFullView.value);
     const img = props.loadedImage
-    const visibleW = img.naturalWidth / props.zoomScale
-    const visibleH = img.naturalHeight / props.zoomScale
+
+    // 画像のアスペクト比 (naturalWidth / naturalHeight)
+    const imgAspect = img.naturalWidth / img.naturalHeight
+    // Canvasのアスペクト比 (canvasWidth / canvasHeight)
+    const canvasAspect = canvasWidth / canvasHeight
+
+    if (isFullView.value) {
+      // 全体が見えるようにする（contain）にゃ
+      currentZoomScale.value = 1
+    }
+    console.debug("Zoom:", currentZoomScale.value);
+
+    let visibleW, visibleH
+    // アスペクト比を保ったまま、Canvas全体を覆う（cover）ようにクロップサイズを決定するにゃ
+    if (imgAspect > canvasAspect) {
+      visibleH = img.naturalHeight / currentZoomScale.value
+      visibleW = visibleH * canvasAspect
+    } else {
+      visibleW = img.naturalWidth / currentZoomScale.value
+      visibleH = visibleW / canvasAspect
+    }
 
     const maxOffsetX = Math.max(0, img.naturalWidth - visibleW)
     const maxOffsetY = Math.max(0, img.naturalHeight - visibleH)
 
-    cropOffsetX.value = Math.random() * maxOffsetX
-    cropOffsetY.value = Math.random() * maxOffsetY
+    if (isFullView.value) {
+      cropOffsetX.value = 0
+      cropOffsetY.value = 0
+    } else {
+      cropOffsetX.value = maxOffsetX > 0 ? Math.random() * maxOffsetX : 0
+      cropOffsetY.value = maxOffsetY > 0 ? Math.random() * maxOffsetY : 0
+    }
 
     drawCanvas()
   }
@@ -191,8 +233,17 @@ const drawCanvas = () => {
 
   ctx.clearRect(0, 0, canvasWidth, canvasHeight)
 
-  const visibleW = img.naturalWidth / props.zoomScale
-  const visibleH = img.naturalHeight / props.zoomScale
+  const imgAspect = img.naturalWidth / img.naturalHeight
+  const canvasAspect = canvasWidth / canvasHeight
+
+  let visibleW, visibleH
+  if (imgAspect > canvasAspect) {
+    visibleH = img.naturalHeight / currentZoomScale.value
+    visibleW = visibleH * canvasAspect
+  } else {
+    visibleW = img.naturalWidth / currentZoomScale.value
+    visibleH = visibleW / canvasAspect
+  }
 
   ctx.drawImage(
     img,
@@ -229,8 +280,17 @@ const onCanvasMouseMove = (e) => {
   dragStartY.value = e.clientY
 
   const img = props.loadedImage
-  const visibleW = img.naturalWidth / props.zoomScale
-  const visibleH = img.naturalHeight / props.zoomScale
+  const imgAspect = img.naturalWidth / img.naturalHeight
+  const canvasAspect = canvasWidth / canvasHeight
+
+  let visibleW, visibleH
+  if (imgAspect > canvasAspect) {
+    visibleH = img.naturalHeight / currentZoomScale.value
+    visibleW = visibleH * canvasAspect
+  } else {
+    visibleW = img.naturalWidth / currentZoomScale.value
+    visibleH = visibleW / canvasAspect
+  }
 
   const scaleX = visibleW / canvasWidth
   const scaleY = visibleH / canvasHeight
@@ -278,8 +338,17 @@ const onCanvasTouchMove = (e) => {
   dragStartY.value = e.touches[0].clientY
 
   const img = props.loadedImage
-  const visibleW = img.naturalWidth / props.zoomScale
-  const visibleH = img.naturalHeight / props.zoomScale
+  const imgAspect = img.naturalWidth / img.naturalHeight
+  const canvasAspect = canvasWidth / canvasHeight
+
+  let visibleW, visibleH
+  if (imgAspect > canvasAspect) {
+    visibleH = img.naturalHeight / currentZoomScale.value
+    visibleW = visibleH * canvasAspect
+  } else {
+    visibleW = img.naturalWidth / currentZoomScale.value
+    visibleH = visibleW / canvasAspect
+  }
 
   const scaleX = visibleW / canvasWidth
   const scaleY = visibleH / canvasHeight
